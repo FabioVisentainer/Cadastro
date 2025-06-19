@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PropertyControllerIntegrationTest {
+class PropertyControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

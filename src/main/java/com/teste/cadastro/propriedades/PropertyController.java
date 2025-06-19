@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/property")
 public class PropertyController {
 
-    private final PropertyService service;
+    private final PropertyService propertyService;
 
-    public PropertyController(PropertyService service) {
-        this.service = service;
+    public PropertyController(PropertyService propertyService) {
+        this.propertyService = propertyService;
     }
 
     /**
@@ -31,7 +31,7 @@ public class PropertyController {
      */
     @GetMapping
     public ResponseEntity<List<PropertyDTO>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+        return ResponseEntity.ok(propertyService.findAll());
     }
 
     /**
@@ -43,7 +43,7 @@ public class PropertyController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<PropertyDTO> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.findById(id));
+        return ResponseEntity.ok(propertyService.findById(id));
     }
 
     /**
@@ -64,7 +64,7 @@ public class PropertyController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        PropertyDTO created = service.create(dto);
+        PropertyDTO created = propertyService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -87,7 +87,7 @@ public class PropertyController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        PropertyDTO updated = service.update(id, dto);
+        PropertyDTO updated = propertyService.update(id, dto);
         return ResponseEntity.ok(updated);
     }
 
@@ -100,7 +100,7 @@ public class PropertyController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        service.delete(id);
+        propertyService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
