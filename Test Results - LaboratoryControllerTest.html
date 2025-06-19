@@ -2,7 +2,7 @@
 <html xmlns:str="http://exslt.org/strings" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Test Results &mdash; PropertyControllerIntegrationTest</title>
+        <title>Test Results &mdash; LaboratoryControllerTest</title>
         <style type="text/css">
           html {
             height: 100%
@@ -572,9 +572,9 @@ jQuery.cookie = function(name, value, options) {
     <body>
         <div id="container">
             <div id="header">
-                <div class="time" xmlns="">1.14 s</div>
+                <div class="time" xmlns="">1.22 s</div>
                 <h1>
-                    PropertyControllerIntegrationTest: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">11 total, </span><span class="passed">11 passed</span></strong>
+                    LaboratoryControllerTest: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">17 total, </span><span class="passed">17 passed</span></strong>
                 </h1>
                 <div id="treecontrol">
                     <ul>
@@ -593,68 +593,126 @@ jQuery.cookie = function(name, value, options) {
                 <ul id="tree">
                     <li xmlns="" class="level top open">
                         <span><em class="time">
-                                <div class="time">1.14 s</div>
-                            </em>PropertyControllerIntegrationTest</span>
+                                <div class="time">1.22 s</div>
+                            </em>LaboratoryControllerTest</span>
                         <ul>
-                            <li class="level test">
+                            <li class="level suite open">
                                 <span><em class="time">
-                                        <div class="time">575 ms</div>
-                                    </em><em class="status">passed</em>PUT /property/{id} - Deve falhar ao atualizar para nome que j&aacute; existe em outra propriedade</span>
+                                        <div class="time">894 ms</div>
+                                    </em>DELETE Tests</span>
                                 <ul>
-                                    <li class="text">
-                                        <span class="stderr">Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3&#13;<br/>WARNING: A Java agent has been loaded dynamically (C:\Users\fabio\.gradle\caches\modules-2\files-2.1\net.bytebuddy\byte-buddy-agent\1.17.5\58f9507f5f28d1d3e7adfb4ec2fe37c29d332c9b\byte-buddy-agent-1.17.5.jar)&#13;<br/>WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning&#13;<br/>WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information&#13;<br/>WARNING: Dynamic loading of agents will be disallowed by default in a future release&#13;<br/></span>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">853 ms</div>
+                                            </em><em class="status">passed</em>DELETE /laboratory/{id} - Deve retornar 404 ao deletar laborat&oacute;rio inexistente</span>
+                                        <ul>
+                                            <li class="text">
+                                                <span class="stderr">Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3&#13;<br/>WARNING: A Java agent has been loaded dynamically (C:\Users\fabio\.gradle\caches\modules-2\files-2.1\net.bytebuddy\byte-buddy-agent\1.17.5\58f9507f5f28d1d3e7adfb4ec2fe37c29d332c9b\byte-buddy-agent-1.17.5.jar)&#13;<br/>WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning&#13;<br/>WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information&#13;<br/>WARNING: Dynamic loading of agents will be disallowed by default in a future release&#13;<br/></span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">41 ms</div>
+                                            </em><em class="status">passed</em>DELETE /laboratory/{id} - Deve deletar laborat&oacute;rio existente</span>
                                     </li>
                                 </ul>
                             </li>
-                            <li class="level test">
+                            <li class="level suite open">
                                 <span><em class="time">
-                                        <div class="time">16 ms</div>
-                                    </em><em class="status">passed</em>POST /property - Deve falhar ao criar propriedade com nome j&aacute; existente</span>
+                                        <div class="time">198 ms</div>
+                                    </em>UPDATE Tests</span>
+                                <ul>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">69 ms</div>
+                                            </em><em class="status">passed</em>PUT /laboratory/{id} - Deve falhar ao atualizar para nome que j&aacute; existe em outro laborat&oacute;rio</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">39 ms</div>
+                                            </em><em class="status">passed</em>PUT /laboratory/{id} - Deve falhar ao atualizar com nome vazio</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">16 ms</div>
+                                            </em><em class="status">passed</em>PUT /laboratory/{id} - Deve falhar ao atualizar com nome maior que 100 caracteres</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">28 ms</div>
+                                            </em><em class="status">passed</em>PUT /laboratory/{id} - Deve atualizar laborat&oacute;rio existente</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">18 ms</div>
+                                            </em><em class="status">passed</em>PUT /laboratory/{id} - Deve retornar 404 para update em laborat&oacute;rio inexistente</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">17 ms</div>
+                                            </em><em class="status">passed</em>PUT /laboratory/{id} - Deve atualizar para mesmo nome atual sem erro</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">11 ms</div>
+                                            </em><em class="status">passed</em>PUT /laboratory/{id} - Deve falhar ao atualizar com nome com 2 caracteres</span>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="level test">
+                            <li class="level suite open">
                                 <span><em class="time">
-                                        <div class="time">41 ms</div>
-                                    </em><em class="status">passed</em>POST /property - Deve criar nova propriedade com nome &uacute;nico</span>
+                                        <div class="time">76 ms</div>
+                                    </em>CREATE Tests</span>
+                                <ul>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">15 ms</div>
+                                            </em><em class="status">passed</em>POST /laboratory - Deve falhar ao criar laborat&oacute;rio com nome j&aacute; existente</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">21 ms</div>
+                                            </em><em class="status">passed</em>POST /laboratory - Deve criar novo laborat&oacute;rio com nome &uacute;nico</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">15 ms</div>
+                                            </em><em class="status">passed</em>POST /laboratory - Deve falhar ao criar laborat&oacute;rio com nome com 2 caracteres</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">13 ms</div>
+                                            </em><em class="status">passed</em>POST /laboratory - Deve falhar ao criar laborat&oacute;rio com nome vazio</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">12 ms</div>
+                                            </em><em class="status">passed</em>POST /laboratory - Deve falhar ao criar laborat&oacute;rio com nome maior que 100 caracteres</span>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="level test">
+                            <li class="level suite open">
                                 <span><em class="time">
-                                        <div class="time">22 ms</div>
-                                    </em><em class="status">passed</em>GET /property - Deve retornar lista real do banco em mem&oacute;ria</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">31 ms</div>
-                                    </em><em class="status">passed</em>PUT /property/{id} - Deve atualizar propriedade existente</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">17 ms</div>
-                                    </em><em class="status">passed</em>GET /property/{id} - Deve retornar propriedade real</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">360 ms</div>
-                                    </em><em class="status">passed</em>GET /property/{id} - Deve retornar 404 para id inexistente</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">20 ms</div>
-                                    </em><em class="status">passed</em>DELETE /property/{id} - Deve retornar 404 ao deletar propriedade inexistente</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">17 ms</div>
-                                    </em><em class="status">passed</em>PUT /property/{id} - Deve retornar 404 para update em propriedade inexistente</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">18 ms</div>
-                                    </em><em class="status">passed</em>DELETE /property/{id} - Deve deletar propriedade existente</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">18 ms</div>
-                                    </em><em class="status">passed</em>PUT /property/{id} - Deve atualizar para mesmo nome atual sem erro</span>
+                                        <div class="time">52 ms</div>
+                                    </em>GET Tests</span>
+                                <ul>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">17 ms</div>
+                                            </em><em class="status">passed</em>GET /laboratory - Deve retornar lista real do banco em mem&oacute;ria</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">16 ms</div>
+                                            </em><em class="status">passed</em>GET /laboratory/{id} - Deve retornar laborat&oacute;rio real</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">19 ms</div>
+                                            </em><em class="status">passed</em>GET /laboratory/{id} - Deve retornar 404 para id inexistente</span>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </li>
@@ -662,7 +720,7 @@ jQuery.cookie = function(name, value, options) {
             </div>
         </div>
         <div id="footer">
-            <p>Generated by IntelliJ IDEA on 18/06/2025 22:34</p>
+            <p>Generated by IntelliJ IDEA on 19/06/2025 00:45</p>
         </div>
     </body>
 </html>
