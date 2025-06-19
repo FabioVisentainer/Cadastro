@@ -22,7 +22,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
 	/* Banco */
 	runtimeOnly("com.mysql:mysql-connector-j")
@@ -31,9 +30,11 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-	/* Bootstrap */
-	implementation("org.webjars:bootstrap:5.3.3")
-	implementation("org.webjars.npm:bootstrap-icons:1.11.3")
+	/* Devtools */
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+	// Swagger UI
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8")
 }
 
 tasks.withType<Test> {
