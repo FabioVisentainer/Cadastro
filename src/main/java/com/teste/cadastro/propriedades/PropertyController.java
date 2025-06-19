@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Importações omitidas para clareza
-
 /**
  * Controlador REST responsável por gerenciar as Propriedades (Property).
  * Permite operações de CRUD: listar, buscar, criar, atualizar e deletar.

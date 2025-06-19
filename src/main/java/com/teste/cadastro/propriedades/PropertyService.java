@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 @Service
 public class PropertyService {
 
-    private final PropertyRepository repository;
+    private final PropertyRepository propertyRepository;
 
-    public PropertyService(PropertyRepository repository) {
-        this.repository = repository;
+    public PropertyService(PropertyRepository propertyRepository) {
+        this.propertyRepository = propertyRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ public class PropertyService {
      * @return Lista de {@link PropertyDTO}
      */
     public List<PropertyDTO> findAll() {
-        return repository.findAll().stream()
+        return propertyRepository.findAll().stream()
                 .map(PropertyDTO::new) // Converte cada entidade para DTO
                 .collect(Collectors.toList());
     }
@@ -38,7 +38,7 @@ public class PropertyService {
      * @throws EntityNotFoundException se a propriedade não for encontrada
      */
     public PropertyDTO findById(Integer id) {
-        PropertyModel property = repository.findById(id)
+        PropertyModel property = propertyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Propriedade com ID " + id + " não encontrada."));
         return new PropertyDTO(property);
     }
@@ -52,13 +52,13 @@ public class PropertyService {
      */
     public PropertyDTO create(PropertyDTO dto) {
         // Validação para verificar se já existe uma propriedade com o nome
-        if (repository.existsByNome(dto.getNome())) {
+        if (propertyRepository.existsByNome(dto.getNome())) {
             throw new IllegalArgumentException("Nome da propriedade já existe.");
         }
-        PropertyModel entity = new PropertyModel();
-        entity.setNome(dto.getNome());
-        entity = repository.save(entity); // Persiste no banco
-        return new PropertyDTO(entity);
+        PropertyModel property = new PropertyModel();
+        property.setNome(dto.getNome());
+        property = propertyRepository.save(property); // Persiste no banco
+        return new PropertyDTO(property);
     }
 
     /**
@@ -72,15 +72,15 @@ public class PropertyService {
      */
     public PropertyDTO update(Integer id, PropertyDTO dto) {
         // Validação para verificar se já existe uma propriedade com o nome
-        if (repository.existsByNomeAndIdNot(dto.getNome(), id)) {
+        if (propertyRepository.existsByNomeAndIdNot(dto.getNome(), id)) {
             throw new IllegalArgumentException("Nome da propriedade já existe.");
         }
-        PropertyModel entity = repository.findById(id)
+        PropertyModel property = propertyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Propriedade com ID " + id + " não encontrada."));
 
-        entity.setNome(dto.getNome()); // Atualiza nome
-        entity = repository.save(entity); // Salva alterações
-        return new PropertyDTO(entity);
+        property.setNome(dto.getNome()); // Atualiza nome
+        property = propertyRepository.save(property); // Salva alterações
+        return new PropertyDTO(property);
     }
 
     /**
@@ -90,10 +90,10 @@ public class PropertyService {
      * @throws EntityNotFoundException se o ID não existir
      */
     public void delete(Integer id) {
-        boolean exists = repository.existsById(id);
+        boolean exists = propertyRepository.existsById(id);
         if (!exists) {
             throw new EntityNotFoundException("Propriedade com ID " + id + " não encontrada.");
         }
-        repository.deleteById(id);
+        propertyRepository.deleteById(id);
     }
 }

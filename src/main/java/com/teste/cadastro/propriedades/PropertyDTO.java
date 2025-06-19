@@ -16,9 +16,9 @@ public class PropertyDTO {
     }
 
     // construtor para testes e criação rápida
-    public PropertyDTO(Integer propertyId, String propertyName) {
-        this.id = propertyId;
-        this.nome = propertyName;
+    public PropertyDTO(Integer id, String nome) {
+        this.id = id;
+        this.nome = nome;
     }
 
     public PropertyDTO(PropertyModel entity) {
@@ -27,19 +27,11 @@ public class PropertyDTO {
     }
 
     // Getters e Setters
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() {return id;}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setId(Integer id) {this.id = id;}
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() {return nome;}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public void setNome(String nome) {this.nome = nome;}
 }

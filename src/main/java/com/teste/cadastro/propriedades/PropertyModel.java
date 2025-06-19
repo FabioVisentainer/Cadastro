@@ -19,19 +19,11 @@ public class PropertyModel {
     private String nome;
 
     // Getters e Setters
-    public int getId() {
-        return id;
-    }
+    public int getId() {return id;}
 
-    public void setId(int propertyId) {
-        this.id = propertyId;
-    }
+    public void setId(int propertyId) {this.id = propertyId;}
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() {return nome;}
 
-    public void setNome(String propertyName) {
-        this.nome = propertyName;
-    }
+    public void setNome(String propertyName) {this.nome = propertyName;}
 }
