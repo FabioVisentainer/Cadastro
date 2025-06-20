@@ -116,7 +116,7 @@ public class LaboratorioController {
             @RequestParam Optional<ZonedDateTime> dataFinalInicio,
             @RequestParam Optional<ZonedDateTime> dataFinalFim,
             @RequestParam Optional<String> observacoes,
-            @RequestParam Long quantidadeMinima
+            @RequestParam(required = true) Long quantidadeMinima
     ) {
         List<LaboratorioResumoDTO> resultado = laboratorioService.listarLaboratoriosComResumo(
                 dataInicialInicio, dataInicialFim, dataFinalInicio, dataFinalFim, observacoes, quantidadeMinima
