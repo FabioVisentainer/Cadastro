@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
  * Controlador REST responsável por gerenciar os Laboratórios (laboratorio).
  * Permite operações de CRUD: listar, buscar, criar, atualizar e deletar.
  */
-@Validated
 @RestController
 @RequestMapping("/laboratorio")
 public class LaboratorioController {
@@ -109,25 +108,6 @@ public class LaboratorioController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * Endpoint adicional: resumo de laboratórios com filtros.
-     */
-    @GetMapping("/resumo")
-    public ResponseEntity<?> listarResumoLaboratorios(
-            @RequestParam Optional<ZonedDateTime> dataInicialInicio,
-            @RequestParam Optional<ZonedDateTime> dataInicialFim,
-            @RequestParam Optional<ZonedDateTime> dataFinalInicio,
-            @RequestParam Optional<ZonedDateTime> dataFinalFim,
-            @RequestParam Optional<String> observacoes,
-            @RequestParam(required = true) @Min(value = 0, message = "A quantidade mínima deve ser igual ou maior que zero.") Long quantidadeMinima
-    ) {
-
-        List<LaboratorioResumoDTO> resultado = laboratorioService.listarLaboratoriosComResumo(
-                dataInicialInicio, dataInicialFim, dataFinalInicio, dataFinalFim, observacoes, quantidadeMinima
-        );
-        return ResponseEntity.ok(resultado);
-
-    }
 }
 
 
