@@ -11,22 +11,22 @@ import java.util.stream.Collectors;
  * Fornece métodos para operações CRUD e conversão entre modelos e DTOs.
  */
 @Service
-public class PropertyService {
+public class PropriedadeService {
 
-    private final PropertyRepository propertyRepository;
+    private final PropriedadeRepository propriedadeRepository;
 
-    public PropertyService(PropertyRepository propertyRepository) {
-        this.propertyRepository = propertyRepository;
+    public PropriedadeService(PropriedadeRepository propriedadeRepository) {
+        this.propriedadeRepository = propriedadeRepository;
     }
 
     /**
      * Retorna todas as propriedades cadastradas.
      *
-     * @return Lista de {@link PropertyDTO}
+     * @return Lista de {@link PropriedadeDTO}
      */
-    public List<PropertyDTO> findAll() {
-        return propertyRepository.findAll().stream()
-                .map(PropertyDTO::new) // Converte cada entidade para DTO
+    public List<PropriedadeDTO> findAll() {
+        return propriedadeRepository.findAll().stream()
+                .map(PropriedadeDTO::new) // Converte cada entidade para DTO
                 .collect(Collectors.toList());
     }
 
@@ -34,31 +34,31 @@ public class PropertyService {
      * Busca uma propriedade pelo seu ID.
      *
      * @param id Identificador da propriedade
-     * @return {@link PropertyDTO} correspondente
+     * @return {@link PropriedadeDTO} correspondente
      * @throws EntityNotFoundException se a propriedade não for encontrada
      */
-    public PropertyDTO findById(Integer id) {
-        PropertyModel property = propertyRepository.findById(id)
+    public PropriedadeDTO findById(Integer id) {
+        Propriedade propriedade = propriedadeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Propriedade com ID " + id + " não encontrada."));
-        return new PropertyDTO(property);
+        return new PropriedadeDTO(propriedade);
     }
 
     /**
      * Cria uma nova propriedade.
      *
      * @param dto Dados da nova propriedade
-     * @return {@link PropertyDTO} da propriedade criada
+     * @return {@link PropriedadeDTO} da propriedade criada
      * @throws IllegalArgumentException se o nome informado já estiver em uso
      */
-    public PropertyDTO create(PropertyDTO dto) {
+    public PropriedadeDTO create(PropriedadeDTO dto) {
         // Validação para verificar se já existe uma propriedade com o nome
-        if (propertyRepository.existsByNome(dto.getNome())) {
+        if (propriedadeRepository.existsByNome(dto.getNome())) {
             throw new IllegalArgumentException("Nome da propriedade já existe.");
         }
-        PropertyModel property = new PropertyModel();
-        property.setNome(dto.getNome());
-        property = propertyRepository.save(property); // Persiste no banco
-        return new PropertyDTO(property);
+        Propriedade propriedade = new Propriedade();
+        propriedade.setNome(dto.getNome());
+        propriedade = propriedadeRepository.save(propriedade); // Persiste no banco
+        return new PropriedadeDTO(propriedade);
     }
 
     /**
@@ -66,21 +66,21 @@ public class PropertyService {
      *
      * @param id  Identificador da propriedade a ser atualizada
      * @param dto Dados atualizados
-     * @return {@link PropertyDTO} com os dados atualizados
+     * @return {@link PropriedadeDTO} com os dados atualizados
      * @throws EntityNotFoundException se o ID não existir
      * @throws IllegalArgumentException se o novo nome já estiver em uso por outra propriedade
      */
-    public PropertyDTO update(Integer id, PropertyDTO dto) {
+    public PropriedadeDTO update(Integer id, PropriedadeDTO dto) {
         // Validação para verificar se já existe uma propriedade com o nome
-        if (propertyRepository.existsByNomeAndIdNot(dto.getNome(), id)) {
+        if (propriedadeRepository.existsByNomeAndIdNot(dto.getNome(), id)) {
             throw new IllegalArgumentException("Nome da propriedade já existe.");
         }
-        PropertyModel property = propertyRepository.findById(id)
+        Propriedade propriedade = propriedadeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Propriedade com ID " + id + " não encontrada."));
 
-        property.setNome(dto.getNome()); // Atualiza nome
-        property = propertyRepository.save(property); // Salva alterações
-        return new PropertyDTO(property);
+        propriedade.setNome(dto.getNome()); // Atualiza nome
+        propriedade = propriedadeRepository.save(propriedade); // Salva alterações
+        return new PropriedadeDTO(propriedade);
     }
 
     /**
@@ -90,10 +90,10 @@ public class PropertyService {
      * @throws EntityNotFoundException se o ID não existir
      */
     public void delete(Integer id) {
-        boolean exists = propertyRepository.existsById(id);
+        boolean exists = propriedadeRepository.existsById(id);
         if (!exists) {
             throw new EntityNotFoundException("Propriedade com ID " + id + " não encontrada.");
         }
-        propertyRepository.deleteById(id);
+        propriedadeRepository.deleteById(id);
     }
 }
