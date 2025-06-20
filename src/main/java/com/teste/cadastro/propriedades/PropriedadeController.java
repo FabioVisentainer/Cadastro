@@ -11,39 +11,39 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Controlador REST responsável por gerenciar as Propriedades (Property).
+ * Controlador REST responsável por gerenciar as Propriedades (Propriedade).
  * Permite operações de CRUD: listar, buscar, criar, atualizar e deletar.
  */
 @RestController
-@RequestMapping("/property")
-public class PropertyController {
+@RequestMapping("/propriedade")
+public class PropriedadeController {
 
-    private final PropertyService propertyService;
+    private final PropriedadeService propriedadeService;
 
-    public PropertyController(PropertyService propertyService) {
-        this.propertyService = propertyService;
+    public PropriedadeController(PropriedadeService propriedadeService) {
+        this.propriedadeService = propriedadeService;
     }
 
     /**
      * Retorna a lista de todas as propriedades cadastradas.
      *
-     * @return Lista de PropertyDTO com status 200 (OK)
+     * @return Lista de PropriedadeDTO com status 200 (OK)
      */
     @GetMapping
-    public ResponseEntity<List<PropertyDTO>> findAll() {
-        return ResponseEntity.ok(propertyService.findAll());
+    public ResponseEntity<List<PropriedadeDTO>> findAll() {
+        return ResponseEntity.ok(propriedadeService.findAll());
     }
 
     /**
      * Retorna uma propriedade pelo seu ID.
      *
      * @param id Identificador da propriedade
-     * @return {@link PropertyDTO} correspondente com status 200 (OK)
+     * @return {@link PropriedadeDTO} correspondente com status 200 (OK)
      * @throws jakarta.persistence.EntityNotFoundException se o ID não existir
      */
     @GetMapping("/{id}")
-    public ResponseEntity<PropertyDTO> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(propertyService.findById(id));
+    public ResponseEntity<PropriedadeDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok(propriedadeService.findById(id));
     }
 
     /**
@@ -51,10 +51,10 @@ public class PropertyController {
      *
      * @param dto           Objeto contendo os dados da nova propriedade
      * @param bindingResult Resultado da validação dos dados
-     * @return {@link PropertyDTO} criado com status 201 (Created), ou 400 (Bad Request) se houver erros de validação
+     * @return {@link PropriedadeDTO} criado com status 201 (Created), ou 400 (Bad Request) se houver erros de validação
      */
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody PropertyDTO dto, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody PropriedadeDTO dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // Tratar erros, retornar bad request com mensagens
             List<String> errors = bindingResult.getAllErrors()
@@ -64,7 +64,7 @@ public class PropertyController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        PropertyDTO created = propertyService.create(dto);
+        PropriedadeDTO created = propriedadeService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -74,11 +74,11 @@ public class PropertyController {
      * @param id            Identificador da propriedade a ser atualizada
      * @param dto           Objeto contendo os novos dados da propriedade
      * @param bindingResult Resultado da validação dos dados
-     * @return {@link PropertyDTO} atualizado com status 200 (OK), ou 400 (Bad Request) se houver erros de validação
+     * @return {@link PropriedadeDTO} atualizado com status 200 (OK), ou 400 (Bad Request) se houver erros de validação
      * @throws jakarta.persistence.EntityNotFoundException se o ID não existir
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @RequestBody PropertyDTO dto, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @RequestBody PropriedadeDTO dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors()
                     .stream()
@@ -87,7 +87,7 @@ public class PropertyController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        PropertyDTO updated = propertyService.update(id, dto);
+        PropriedadeDTO updated = propriedadeService.update(id, dto);
         return ResponseEntity.ok(updated);
     }
 
@@ -100,7 +100,7 @@ public class PropertyController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        propertyService.delete(id);
+        propriedadeService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
