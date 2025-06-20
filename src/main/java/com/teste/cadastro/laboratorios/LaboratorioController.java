@@ -1,6 +1,7 @@
 package com.teste.cadastro.laboratorios;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -116,7 +117,7 @@ public class LaboratorioController {
             @RequestParam Optional<ZonedDateTime> dataFinalInicio,
             @RequestParam Optional<ZonedDateTime> dataFinalFim,
             @RequestParam Optional<String> observacoes,
-            @RequestParam(required = true) Long quantidadeMinima
+            @RequestParam(required = true) @Min(0) Long quantidadeMinima
     ) {
         List<LaboratorioResumoDTO> resultado = laboratorioService.listarLaboratoriosComResumo(
                 dataInicialInicio, dataInicialFim, dataFinalInicio, dataFinalFim, observacoes, quantidadeMinima
