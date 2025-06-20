@@ -141,45 +141,61 @@ public class LaboratorioService {
             Long quantidadeMinima
     ) {
 
-        // Validação de dataInicialInicio
+// Validação de dataInicialInicio
         dataInicialInicio.ifPresent(dataInicial -> {
-            // Se dataInicial for posterior a qualquer uma das datas finais, lança exceção
-            if (dataInicial.isAfter(dataInicialFim.orElse(null))
-                    || dataInicial.isAfter(dataFinalInicio.orElse(null))
-                    || dataInicial.isAfter(dataFinalFim.orElse(null)))
-            {
-                throw new IllegalArgumentException("A data inicial de início deve ser igual ou anterior às outras datas.");
+            // Se dataInicialFim estiver presente e dataInicial for posterior a dataInicialFim
+            if (dataInicialFim.isPresent() && dataInicial.isAfter(dataInicialFim.get())) {
+                throw new IllegalArgumentException("A Data Inicial de Começo não pode ser posterior à Data Final de Começo.");
+            }
+            // Se dataFinalInicio estiver presente e dataInicial for posterior a dataFinalInicio
+            if (dataFinalInicio.isPresent() && dataInicial.isAfter(dataFinalInicio.get())) {
+                throw new IllegalArgumentException("A Data Inicial de Começo não pode ser posterior à data Data Inicial de Término.");
+            }
+            // Se dataFinalFim estiver presente e dataInicial for posterior a dataFinalFim
+            if (dataFinalFim.isPresent() && dataInicial.isAfter(dataFinalFim.get())) {
+                throw new IllegalArgumentException("A Data Inicial de Começo não pode ser posterior à Data Final de Término.");
             }
         });
 
         // Validação de dataInicialFim
         dataInicialFim.ifPresent(dataInicial -> {
-            // Se dataInicial for posterior a qualquer uma das datas finais, lança exceção
-            if (dataInicial.isBefore(dataInicialInicio.orElse(null))
-                    || dataInicial.isAfter(dataFinalFim.orElse(null)))
-            {
-                throw new IllegalArgumentException("A data inicial de fim deve ser posterior ou igual à data inicial de início e anterior ou igual à data final de fim.");
+            // Se dataInicialInicio estiver presente e dataInicial for anterior a dataInicialInicio
+            if (dataInicialInicio.isPresent() && dataInicial.isBefore(dataInicialInicio.get())) {
+                throw new IllegalArgumentException("A Data Final de Começo não pode ser anterior à Data Inicial de Começo.");
+            }
+
+            // Se dataFinalFim estiver presente e dataInicial for posterior a dataFinalFim
+            if (dataFinalFim.isPresent() && dataInicial.isAfter(dataFinalFim.get())) {
+                throw new IllegalArgumentException("A Data Final de Começo não pode ser posterior à Data Final de Término.");
             }
         });
 
         // Validação de dataFinalInicio
         dataFinalInicio.ifPresent(dataFinal -> {
-            // Se dataInicial for posterior a qualquer uma das datas finais, lança exceção
-            if (dataFinal.isBefore(dataInicialInicio.orElse(null))
-                    || dataFinal.isAfter(dataFinalFim.orElse(null)))
-            {
-                throw new IllegalArgumentException("A data final inicial deve ser posterior ou igual à data inicial de início e anterior ou igual à data final de fim.");
+            // Se dataInicialInicio estiver presente e dataFinal for anterior a dataInicialInicio
+            if (dataInicialInicio.isPresent() && dataFinal.isBefore(dataInicialInicio.get())) {
+                throw new IllegalArgumentException("A Data Inicial de Término não pode ser anterior à Data Inicial de Começo.");
+            }
+
+            // Se dataFinalFim estiver presente e dataFinal for posterior a dataFinalFim
+            if (dataFinalFim.isPresent() && dataFinal.isAfter(dataFinalFim.get())) {
+                throw new IllegalArgumentException("A Data Inicial de Término não pode ser posterior à Data Final de Término.");
             }
         });
 
         // Validação de dataFinalFim
         dataFinalFim.ifPresent(dataFinal -> {
-            // Se dataInicial for posterior a qualquer uma das datas finais, lança exceção
-            if (dataFinal.isBefore(dataInicialInicio.orElse(null))
-                    || dataFinal.isBefore(dataInicialFim.orElse(null))
-                    || dataFinal.isBefore(dataFinalInicio.orElse(null)))
-            {
-                throw new IllegalArgumentException("A data final final deve ser posterior ou igual às outras datas.");
+            // Se dataInicialInicio estiver presente e dataFinal for anterior a dataInicialInicio
+            if (dataInicialInicio.isPresent() && dataFinal.isBefore(dataInicialInicio.get())) {
+                throw new IllegalArgumentException("A Data Final de Término não pode ser anterior à Data Inicial de Começo.");
+            }
+            // Se dataInicialFim estiver presente e dataFinal for anterior a dataInicialFim
+            if (dataInicialFim.isPresent() && dataFinal.isBefore(dataInicialFim.get())) {
+                throw new IllegalArgumentException("A Data Final de Término não pode ser anterior à Data Final de Começo.");
+            }
+            // Se dataFinalInicio estiver presente e dataFinal for anterior a dataFinalInicio
+            if (dataFinalInicio.isPresent() && dataFinal.isBefore(dataFinalInicio.get())) {
+                throw new IllegalArgumentException("A Data Final de Término não pode ser anterior à data Data Inicial de Término.");
             }
         });
 

@@ -424,7 +424,7 @@ class LaboratorioResumoTest {
         }
 
         @Test
-        @DisplayName("Deve retornar erro quando a data inicial de início for posterior a data inicial de fim")
+        @DisplayName("Deve retornar erro quando a data inicial de começo for posterior a data inicial de termino")
         void testDataInicialInicioPosteriorDataInicialFim() throws Exception {
             ZonedDateTime dataInicialInicio = ZonedDateTime.now().minusDays(5).toLocalDate().atStartOfDay(ZoneId.systemDefault());
             ZonedDateTime dataInicialFim = ZonedDateTime.now().minusDays(10).toLocalDate().atStartOfDay(ZoneId.systemDefault());
@@ -442,7 +442,7 @@ class LaboratorioResumoTest {
                             .param("quantidadeMinima", String.valueOf(quantidadeMinima))
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest()) // Espera um erro 400
-                    .andExpect(jsonPath("$.message").value("A data inicial de início deve ser igual ou anterior às outras datas."))
+                    .andExpect(jsonPath("$.message").value("A Data Inicial de Começo não pode ser posterior à Data Final de Começo."))
                     .andReturn();
 
             String jsonResponse = mvcResult.getResponse().getContentAsString();
@@ -452,7 +452,7 @@ class LaboratorioResumoTest {
         }
 
         @Test
-        @DisplayName("Deve retornar erro quando a data final de início for anterior a data inicial de início")
+        @DisplayName("Deve retornar erro quando a data final de começo for anterior a data inicial de começo")
         void testDataFinalInicioAnteriorDataInicialInicio() throws Exception {
             ZonedDateTime dataInicialInicio = ZonedDateTime.now().minusDays(10).toLocalDate().atStartOfDay(ZoneId.systemDefault());
             ZonedDateTime dataInicialFim = ZonedDateTime.now().minusDays(5).toLocalDate().atStartOfDay(ZoneId.systemDefault());
@@ -470,7 +470,7 @@ class LaboratorioResumoTest {
                             .param("quantidadeMinima", String.valueOf(quantidadeMinima))
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest()) // Espera um erro 400
-                    .andExpect(jsonPath("$.message").value("A data inicial de início deve ser igual ou anterior às outras datas."))
+                    .andExpect(jsonPath("$.message").value("A Data Inicial de Começo não pode ser posterior à data Data Inicial de Término."))
                     .andReturn();
 
             String jsonResponse = mvcResult.getResponse().getContentAsString();
@@ -480,7 +480,7 @@ class LaboratorioResumoTest {
         }
 
         @Test
-        @DisplayName("Deve retornar erro quando a data final de fim for anterior a qualquer data inicial ou final")
+        @DisplayName("Deve retornar erro quando a data final de termino for anterior a qualquer data inicial ou final")
         void testDataFinalFimAnteriorQualquerData() throws Exception {
             ZonedDateTime dataInicialInicio = ZonedDateTime.now().minusDays(10).toLocalDate().atStartOfDay(ZoneId.systemDefault());
             ZonedDateTime dataInicialFim = ZonedDateTime.now().minusDays(5).toLocalDate().atStartOfDay(ZoneId.systemDefault());
@@ -498,7 +498,7 @@ class LaboratorioResumoTest {
                             .param("quantidadeMinima", String.valueOf(quantidadeMinima))
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest()) // Espera um erro 400
-                    .andExpect(jsonPath("$.message").value("A data inicial de início deve ser igual ou anterior às outras datas."))
+                    .andExpect(jsonPath("$.message").value("A Data Inicial de Começo não pode ser posterior à Data Final de Término."))
                     .andReturn();
 
             String jsonResponse = mvcResult.getResponse().getContentAsString();
