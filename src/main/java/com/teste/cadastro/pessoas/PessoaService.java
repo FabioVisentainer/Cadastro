@@ -94,6 +94,10 @@ public class PessoaService {
      */
     @Transactional
     public PessoaDTO update(Long id, PessoaDTO dto) {
+        // Buscando Objeto Pessoa
+        Pessoa existente = pessoaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pessoa com ID " + id + " não encontrada."));
+
         //Validação para verificar se já existe uma pessoa com o nome
         if (pessoaRepository.existsByNomeAndIdNot(dto.getNome(), id)) {
             throw new IllegalArgumentException("Nome da pessoa já existe.");
@@ -101,10 +105,6 @@ public class PessoaService {
         if (!dto.getDataFinal().isAfter(dto.getDataInicial())) {
             throw new IllegalArgumentException("A data final deve ser posterior à data inicial.");
         }
-
-        // Buscando Objeto Pessoa
-        Pessoa existente = pessoaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Pessoa com ID " + id + " não encontrada."));
 
         Pessoa atualizada = salvarPessoa(dto, existente);
         return new PessoaDTO(atualizada);

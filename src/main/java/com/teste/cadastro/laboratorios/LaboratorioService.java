@@ -79,12 +79,13 @@ public class LaboratorioService {
      * @throws IllegalArgumentException se o novo nome já estiver em uso por outro laboratório
      */
     public LaboratorioDTO update(Integer id, LaboratorioDTO dto) {
+        Laboratorio laboratorio = laboratorioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Laboratório com ID " + id + " não encontrado."));
+
         // Validação para verificar se já existe uma propriedade com o nome
         if (laboratorioRepository.existsByNomeAndIdNot(dto.getNome(), id)) {
             throw new IllegalArgumentException("Nome do laboratório já existe.");
         }
-        Laboratorio laboratorio = laboratorioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Laboratório com ID " + id + " não encontrado."));
 
         laboratorio.setNome(dto.getNome());
         laboratorio = laboratorioRepository.save(laboratorio);
