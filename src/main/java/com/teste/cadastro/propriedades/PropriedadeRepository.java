@@ -4,11 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repositório JPA para a entidade PropertyModel.
+ * Repositório JPA para a entidade Propriedade.
  * Fornece operações básicas de CRUD e métodos personalizados para validações.
  */
 @Repository
-public interface PropertyRepository extends JpaRepository<PropertyModel, Integer> {
+public interface PropriedadeRepository extends JpaRepository<Propriedade, Integer> {
 
     /**
      * Verifica se já existe alguma propriedade com o nome informado.
