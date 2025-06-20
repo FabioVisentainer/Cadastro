@@ -269,15 +269,13 @@ class PessoaControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(jsonRequest))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().string("Nome da pessoa já existe."))
+                    .andExpect(jsonPath("$.message").value("Nome da pessoa já existe."))
                     .andReturn();
 
-
-            // Obtém a resposta em texto (corpo da resposta)
-            String responseBody = mvcResult.getResponse().getContentAsString();
-
-            // Exibe o conteúdo da resposta no console
-            System.out.println("Response Body (POST /pessoa):\n" + responseBody);
+            String jsonResponse = mvcResult.getResponse().getContentAsString();
+            Object json = objectMapper.readValue(jsonResponse, Object.class);
+            String prettyJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+            System.out.println("Response JSON:\n" + prettyJson);
         }
 
         @Test
@@ -596,14 +594,13 @@ class PessoaControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(jsonRequest))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().string("Nome da pessoa já existe."))
+                    .andExpect(jsonPath("$.message").value("Nome da pessoa já existe."))
                     .andReturn();
 
-            // Obtém a resposta em texto (corpo da resposta)
-            String responseBody = mvcResult.getResponse().getContentAsString();
-
-            // Exibe o conteúdo da resposta no console
-            System.out.println("Response Body (PUT /pessoa/{id}):\n" + responseBody);
+            String jsonResponse = mvcResult.getResponse().getContentAsString();
+            Object json = objectMapper.readValue(jsonResponse, Object.class);
+            String prettyJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+            System.out.println("Response JSON:\n" + prettyJson);
         }
 
         @Test
