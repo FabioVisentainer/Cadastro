@@ -1,8 +1,15 @@
 package com.teste.cadastro.laboratorios;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 public class LaboratorioResumoDTO {
     private int id;
+
+    @NotNull(message = "Nome do laboratório não pode ser nulo.")
     private String nome;
+
+    @Min(value = 0, message = "Quantidade de pessoas não pode ser negativa.")
     private Long quantidadePessoas;
 
     // Construtor que corresponde aos parâmetros da consulta JPQL
