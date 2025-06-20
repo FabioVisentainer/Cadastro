@@ -4,11 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repositório JPA para a entidade LaboratoryModel.
+ * Repositório JPA para a entidade Laboratorio.
  * Fornece operações básicas de CRUD e métodos personalizados para validações.
  */
 @Repository
-public interface LaboratoryRepository extends JpaRepository<LaboratoryModel, Integer> {
+public interface LaboratorioRepository extends JpaRepository<Laboratorio, Integer> {
 
     /**
      * Verifica se já existe algum laboratório com o nome informado.
