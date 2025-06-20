@@ -3,7 +3,7 @@ package com.teste.cadastro.laboratorios;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class LaboratoryDTO {
+public class LaboratorioDTO {
 
     private Integer id;
 
@@ -11,26 +11,24 @@ public class LaboratoryDTO {
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres.")
     private String nome;
 
-    public LaboratoryDTO() {
+    public LaboratorioDTO() {
     }
 
     // construtor para testes e criação rápida
-    public LaboratoryDTO(Integer id, String nome) {
+    public LaboratorioDTO(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-    public LaboratoryDTO(LaboratoryModel entity) {
+    public LaboratorioDTO(Laboratorio entity) {
         this.id = entity.getId();
         this.nome = entity.getNome();
     }
 
     // Getters e Setters
     public Integer getId() {return id;}
-
     public void setId(Integer id) {this.id = id;}
 
     public String getNome() {return nome;}
-
     public void setNome(String nome) {this.nome = nome;}
 }
