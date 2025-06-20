@@ -1,6 +1,5 @@
 package com.teste.cadastro.laboratorios;
 
-import com.teste.cadastro.propriedades.PropertyDTO;
 import jakarta.validation.Valid;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -8,43 +7,45 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Controlador REST responsável por gerenciar os Laboratórios (Laboratory).
+ * Controlador REST responsável por gerenciar os Laboratórios (laboratorio).
  * Permite operações de CRUD: listar, buscar, criar, atualizar e deletar.
  */
 @RestController
-@RequestMapping("/laboratory")
-public class LaboratoryController {
+@RequestMapping("/laboratorio")
+public class LaboratorioController {
 
-    private final LaboratoryService laboratoryService;
+    private final LaboratorioService laboratorioService;
 
-    public LaboratoryController(LaboratoryService laboratoryService) {
-        this.laboratoryService = laboratoryService;
+    public LaboratorioController(LaboratorioService laboratorioService) {
+        this.laboratorioService = laboratorioService;
     }
 
     /**
      * Retorna a lista de todos os laboratórios cadastrados.
      *
-     * @return Lista de LaboratoryDTO com status 200 (OK)
+     * @return Lista de LaboratorioDTO com status 200 (OK)
      */
     @GetMapping
-    public ResponseEntity<List<LaboratoryDTO>> findAll() {
-        return ResponseEntity.ok(laboratoryService.findAll());
+    public ResponseEntity<List<LaboratorioDTO>> findAll() {
+        return ResponseEntity.ok(laboratorioService.findAll());
     }
 
     /**
      * Retorna um laboratório pelo seu ID.
      *
      * @param id Identificador do laboratório
-     * @return {@link LaboratoryDTO} correspondente com status 200 (OK)
+     * @return {@link LaboratorioDTO} correspondente com status 200 (OK)
      * @throws jakarta.persistence.EntityNotFoundException se o ID não existir
      */
     @GetMapping("/{id}")
-    public ResponseEntity<LaboratoryDTO> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(laboratoryService.findById(id));
+    public ResponseEntity<LaboratorioDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok(laboratorioService.findById(id));
     }
 
     /**
@@ -52,10 +53,10 @@ public class LaboratoryController {
      *
      * @param dto           Objeto contendo os dados do novo laboratório
      * @param bindingResult Resultado da validação dos dados
-     * @return {@link LaboratoryDTO} criado com status 201 (Created), ou 400 (Bad Request) se houver erros de validação
+     * @return {@link LaboratorioDTO} criado com status 201 (Created), ou 400 (Bad Request) se houver erros de validação
      */
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody LaboratoryDTO dto, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody LaboratorioDTO dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // Tratar erros, retornar bad request com mensagens
             List<String> errors = bindingResult.getAllErrors()
@@ -65,7 +66,7 @@ public class LaboratoryController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        LaboratoryDTO created = laboratoryService.create(dto);
+        LaboratorioDTO created = laboratorioService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -75,11 +76,11 @@ public class LaboratoryController {
      * @param id            Identificador do laboratório a ser atualizado
      * @param dto           Objeto contendo os novos dados do laboratório
      * @param bindingResult Resultado da validação dos dados
-     * @return {@link LaboratoryDTO} atualizado com status 200 (OK), ou 400 (Bad Request) se houver erros de validação
+     * @return {@link LaboratorioDTO} atualizado com status 200 (OK), ou 400 (Bad Request) se houver erros de validação
      * @throws jakarta.persistence.EntityNotFoundException se o ID não existir
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @RequestBody LaboratoryDTO dto, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @RequestBody LaboratorioDTO dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors()
                     .stream()
@@ -88,7 +89,7 @@ public class LaboratoryController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        LaboratoryDTO updated = laboratoryService.update(id, dto);
+        LaboratorioDTO updated = laboratorioService.update(id, dto);
         return ResponseEntity.ok(updated);
     }
 
@@ -101,7 +102,29 @@ public class LaboratoryController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        laboratoryService.delete(id);
+        laboratorioService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Endpoint adicional: resumo de laboratórios com filtros.
+     */
+    @GetMapping("/resumo")
+    public ResponseEntity<List<LaboratorioResumoDTO>> listarResumoLaboratorios(
+            @RequestParam Optional<ZonedDateTime> dataInicialInicio,
+            @RequestParam Optional<ZonedDateTime> dataInicialFim,
+            @RequestParam Optional<ZonedDateTime> dataFinalInicio,
+            @RequestParam Optional<ZonedDateTime> dataFinalFim,
+            @RequestParam Optional<String> observacoes,
+            @RequestParam Long quantidadeMinima
+    ) {
+        List<LaboratorioResumoDTO> resultado = laboratorioService.listarLaboratoriosComResumo(
+                dataInicialInicio, dataInicialFim, dataFinalInicio, dataFinalFim, observacoes, quantidadeMinima
+        );
+        return ResponseEntity.ok(resultado);
+    }
+
+
 }
+
+
