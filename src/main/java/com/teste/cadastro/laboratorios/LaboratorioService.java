@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -105,7 +106,31 @@ public class LaboratorioService {
     }
 
     /**
-     * Lista laboratórios com resumo de quantidade de pessoas, aplicando filtros e ordenações.
+     * Lista os laboratórios com um resumo de quantidade de pessoas, aplicando filtros de datas e observações,
+     * além de validar as condições das datas para garantir a consistência dos dados.
+     *
+     * Este metodo realiza validações para garantir que as datas fornecidas estejam em conformidade,
+     * ou seja, que a data inicial de início seja anterior ou igual às outras datas e que as datas finais
+     * não sejam anteriores às datas iniciais. Se as validações falharem, será lançada uma exceção do tipo
+     * IllegalArgumentException.
+     *
+     * Após as validações, ele chama o repositório para buscar os laboratórios com base nos filtros informados,
+     * retornando uma lista de objetos do tipo LaboratorioResumoDTO com o resumo dos laboratórios, contendo
+     * informações como o ID, nome e a quantidade de pessoas associadas, além de ser possível aplicar a
+     * ordenação conforme a quantidade de pessoas.
+     *
+     * Os parâmetros são:
+     *
+     * @param dataInicialInicio Data inicial de início do filtro (opcional)
+     * @param dataInicialFim Data final de fim do filtro para "dataInicial" (opcional)
+     * @param dataFinalInicio Data inicial de início do filtro para "dataFinal" (opcional)
+     * @param dataFinalFim Data final de fim do filtro para "dataFinal" (opcional)
+     * @param observacoes Texto a ser buscado nas observações (opcional)
+     * @param quantidadeMinima Número mínimo de pessoas associadas ao laboratório para ser incluído na lista
+     *
+     * @return Lista de objetos LaboratorioResumoDTO com o resumo dos laboratórios
+     *
+     * @throws IllegalArgumentException caso as datas não estejam em conformidade
      */
     public List<LaboratorioResumoDTO> listarLaboratoriosComResumo(
             Optional<ZonedDateTime> dataInicialInicio,
@@ -116,60 +141,56 @@ public class LaboratorioService {
             Long quantidadeMinima
     ) {
 
-        // Validações de datas
-        if (dataInicialInicio.isPresent() && dataInicialFim.isPresent() && dataInicialInicio.get().isAfter(dataInicialFim.get())) {
-            throw new IllegalArgumentException("A data inicial deve ser menor ou igual à data final.");
-        }
+        // Validação de dataInicialInicio
+        dataInicialInicio.ifPresent(dataInicial -> {
+            // Se dataInicial for posterior a qualquer uma das datas finais, lança exceção
+            if (dataInicial.isAfter(dataInicialFim.orElse(null))
+                    || dataInicial.isAfter(dataFinalInicio.orElse(null))
+                    || dataInicial.isAfter(dataFinalFim.orElse(null)))
+            {
+                throw new IllegalArgumentException("A data inicial de início deve ser igual ou anterior às outras datas.");
+            }
+        });
 
-        if (dataFinalInicio.isPresent() && dataInicialFim.isPresent() && dataFinalInicio.get().isBefore(dataInicialFim.get())) {
-            throw new IllegalArgumentException("A data final inicial deve ser maior ou igual à data inicial final.");
-        }
+        // Validação de dataInicialFim
+        dataInicialFim.ifPresent(dataInicial -> {
+            // Se dataInicial for posterior a qualquer uma das datas finais, lança exceção
+            if (dataInicial.isBefore(dataInicialInicio.orElse(null))
+                    || dataInicial.isAfter(dataFinalFim.orElse(null)))
+            {
+                throw new IllegalArgumentException("A data inicial de fim deve ser posterior ou igual à data inicial de início e anterior ou igual à data final de fim.");
+            }
+        });
 
-        if (dataFinalFim.isPresent() && dataFinalInicio.isPresent() && dataFinalFim.get().isBefore(dataFinalInicio.get())) {
-            throw new IllegalArgumentException("A data final deve ser maior ou igual à data final inicial.");
-        }
+        // Validação de dataFinalInicio
+        dataFinalInicio.ifPresent(dataFinal -> {
+            // Se dataInicial for posterior a qualquer uma das datas finais, lança exceção
+            if (dataFinal.isBefore(dataInicialInicio.orElse(null))
+                    || dataFinal.isAfter(dataFinalFim.orElse(null)))
+            {
+                throw new IllegalArgumentException("A data final inicial deve ser posterior ou igual à data inicial de início e anterior ou igual à data final de fim.");
+            }
+        });
 
-        StringBuilder jpql = new StringBuilder(
-                "SELECT new com.teste.cadastro.laboratorios.LaboratorioResumoDTO(" +
-                        "l.id, l.nome, COUNT(p)) " +
-                        "FROM Laboratorio l " +
-                        "JOIN Pessoa p ON p.laboratorio = l " +
-                        "GROUP BY l.id, l.nome " +
-                        "HAVING COUNT(p) >= :qMin " +
-                        "ORDER BY COUNT(p) DESC"
+        // Validação de dataFinalFim
+        dataFinalFim.ifPresent(dataFinal -> {
+            // Se dataInicial for posterior a qualquer uma das datas finais, lança exceção
+            if (dataFinal.isBefore(dataInicialInicio.orElse(null))
+                    || dataFinal.isBefore(dataInicialFim.orElse(null))
+                    || dataFinal.isBefore(dataFinalInicio.orElse(null)))
+            {
+                throw new IllegalArgumentException("A data final final deve ser posterior ou igual às outras datas.");
+            }
+        });
+
+        // Chama o repositório para realizar a consulta personalizada
+        return laboratorioRepository.listarLaboratoriosComResumo(
+                dataInicialInicio.orElse(null),
+                dataInicialFim.orElse(null),
+                dataFinalInicio.orElse(null),
+                dataFinalFim.orElse(null),
+                observacoes.orElse(null),
+                quantidadeMinima
         );
-
-        // Filtros
-        List<String> where = new ArrayList<>();
-        // Faixa para Data Inicial da Pessoa (começo e fim) (opcional);
-        if (dataInicialInicio.isPresent()) where.add("p.dataInicial >= :dtIniInicio");
-        if (dataInicialFim.isPresent()) where.add("p.dataInicial <= :dtIniFim");
-        // Faixa para Data Final da Pessoa (começo e fim) (opcional);
-        if (dataFinalInicio.isPresent()) where.add("p.dataFinal >= :dtFimInicio");
-        if (dataFinalFim.isPresent()) where.add("p.dataFinal <= :dtFimFim");
-        //Busca de palavras em qualquer parte do campo Observações (opcional);
-        if (observacoes.isPresent()) where.add("LOWER(p.observacoes) LIKE CONCAT('%', LOWER(:obs), '%')");
-
-        if (!where.isEmpty()) {
-            jpql.append(" WHERE ").append(String.join(" AND ", where));
-        }
-
-        // Caso necessário ordenar por data inicial (adiciona a ordenação) (data mais antiga por primeiro)
-        if (dataInicialInicio.isPresent() || dataInicialFim.isPresent()) {
-            jpql.append(", MIN(p.dataInicial) ASC");
-        }
-
-        TypedQuery<LaboratorioResumoDTO> query = em.createQuery(jpql.toString(), LaboratorioResumoDTO.class);
-
-        // bind parâmetros de consulta:
-        dataInicialInicio.ifPresent(d -> query.setParameter("dtIniInicio", d));
-        dataInicialFim.ifPresent(d -> query.setParameter("dtIniFim", d));
-        dataFinalInicio.ifPresent(d -> query.setParameter("dtFimInicio", d));
-        dataFinalFim.ifPresent(d -> query.setParameter("dtFimFim", d));
-        observacoes.ifPresent(o -> query.setParameter("obs", o));
-        query.setParameter("qMin", quantidadeMinima);
-
-        return query.getResultList();
     }
-
 }
